@@ -211,6 +211,7 @@
         api.payPeriod = $resource(api.baseUrl + '/financial/pay-period/:id');
         api.application_redirect = $resource(config.securityApi.baseUrl + '/application-redirect/:applicationId');
         api.search = $resource(api.baseUrl + config.api.search + '/:term', null);
+        api.activity = $resource(api.baseUrl + '/activity');
 
         // api.sample = $resource(api.baseUrl + 'sample/sample.json');
 

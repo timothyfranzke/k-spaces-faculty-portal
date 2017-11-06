@@ -14,6 +14,9 @@
     vm.isRoleSet = false;
     vm.searchText = "";
     vm.searchedStudents = [];
+    vm.activity = {
+      meal:{}
+    };
 
     // Data
     if(CommonService.isEmptyObject(managerService.getTyingId()))
@@ -172,6 +175,93 @@
 
     function search(text) {
       vm.searchedStudents = CommonService.searchUser(text, Students);
+    }
+
+    /**
+     * Show event add/edit form dialog
+     *
+     * @param type
+     * @param calendarEvent
+     * @param start
+     * @param end
+     * @param e
+     */
+    function showEventFormDialog(type, calendarEvent, start, end, e)
+    {
+      var dialogData = {
+        type         : type,
+        calendarEvent: calendarEvent,
+        start        : start,
+        end          : end
+      };
+
+      $mdDialog.show({
+        controller         : 'EventFormDialogController',
+        controllerAs       : 'vm',
+        templateUrl        : 'app/main/apps/calendar/dialogs/event-form/event-form-dialog.html',
+        parent             : angular.element($document.body),
+        targetEvent        : e,
+        clickOutsideToClose: true,
+        locals             : {
+          dialogData: dialogData
+        }
+      }).then(function (response)
+      {
+        switch ( response.type )
+        {
+          case 'add':
+            var event = {
+              title     : response.calendarEvent.title,
+              start     : response.calendarEvent.start,
+              end       : response.calendarEvent.end,
+              repeat    : response.calendarEvent.repeat,
+              contacts  : response.calendarEvent.contacts
+            };
+            api.event.save(event, function(res){
+              event._id = res;
+              vm.events[0].push(
+                event
+              );
+
+            });
+
+            break;
+
+          case 'edit':
+            // Edit
+            for ( var i = 0; i < vm.events[0].length; i++ )
+            {
+              // Update
+              if ( vm.events[0][i]._id === response.calendarEvent._id )
+              {
+                var event = {
+                  title: response.calendarEvent.title,
+                  start: response.calendarEvent.start,
+                  end  : response.calendarEvent.end,
+                  repeat : response.calendarEvent.repeat
+                };
+                vm.events[0][i] = event;
+                api.event.update({id:response.calendarEvent._id}, event);
+                break;
+              }
+            }
+            break;
+
+          case 'remove':
+            // Remove
+            for ( var j = 0; j < vm.events[0].length; j++ )
+            {
+              // Update
+              if ( vm.events[0][j]._id === response.calendarEvent._id )
+              {
+                vm.events[0].splice(j, 1);
+                api.event.delete({id:response.calendarEvent._id});
+                break;
+              }
+            }
+            break;
+        }
+      });
     }
   }
 })();

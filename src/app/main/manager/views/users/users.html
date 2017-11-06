@@ -27,7 +27,7 @@
       </div>
       <div>
         <md-button class="blueButton" ng-click="vm.gotoUserCreate()">
-          <span translate="EC.ADD_USER">Add User</span>
+          <span>Add Space Activity</span>
         </md-button>
       </div>
     </div>
@@ -55,12 +55,7 @@
             </th>
             <th class="secondary-text">
               <div class="table-header">
-                <span class="column-title">School</span>
-              </div>
-            </th>
-            <th class="secondary-text">
-              <div class="table-header">
-                <span class="column-title">Role</span>
+                <span class="column-title"># of activities logged</span>
               </div>
             </th>
             <th class="secondary-text">
@@ -86,13 +81,13 @@
               {{user.role}}
             </td>
             <td>
-              <md-button class="edit-button md-icon-button" ng-click="vm.goToUserDetail(user._id)" aria-label="Location details"
-                         translate translate-attr-aria-label="EC.LOCATION_DETAILS">
-                <md-icon class="material-icons">edit</md-icon>
+              <md-button class="edit-button md-icon-button" ng-click="vm.goToUserDetail(user._id)" aria-label="add activity"
+                        >
+                <md-icon class="material-icons">add</md-icon>
               </md-button>
-              <md-button class="edit-button md-icon-button" ng-click="vm.deleteUser(user, $event)" aria-label="Location details"
-                         translate translate-attr-aria-label="EC.LOCATION_DETAILS">
-                <md-icon class="material-icons">delete</md-icon>
+              <md-button class="edit-button md-icon-button" ng-click="vm.deleteUser(user, $event)" aria-label="view activity timeline"
+                         >
+                <md-icon class="material-icons">directions_run</md-icon>
               </md-button>
             </td>
           </tr>
